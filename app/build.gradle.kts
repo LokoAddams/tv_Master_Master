@@ -86,6 +86,9 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.hilt.android) // Usa la última versión disponible
     kapt(libs.hilt.compiler)
+
+    implementation("androidx.compose.animation:animation-graphics:1.6.0")
+    implementation("androidx.compose.ui:ui-text-google-fonts:1.8.1")
 }
 
 kapt {

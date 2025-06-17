@@ -49,4 +49,7 @@ dependencies {
 
     implementation(project(":data"))
     implementation(project(":domain"))
+
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation(libs.kotlinx.coroutines.core)
 }
