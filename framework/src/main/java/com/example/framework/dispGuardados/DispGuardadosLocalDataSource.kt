@@ -6,6 +6,7 @@ import com.example.domain.DispTV
 import com.example.framework.mappers.toEntity
 import com.example.framework.persistence.AppRoomDatabase
 import com.example.framework.persistence.IDispGuardadoDAO
+import com.example.framework.mappers.toDomain
 
 class DispGuardadosLocalDataSource (
     val context: Context
@@ -14,5 +15,9 @@ class DispGuardadosLocalDataSource (
     override suspend fun saveDisp(dispositivo: DispTV): Boolean {
         dispGuardadoDAO.insert(dispositivo.toEntity())
         return true
+    }
+    override suspend fun getDispsGuardados(): List<DispTV> {
+        val entities = dispGuardadoDAO.getAllDisps()
+        return entities.map { it.toDomain() }
     }
 }

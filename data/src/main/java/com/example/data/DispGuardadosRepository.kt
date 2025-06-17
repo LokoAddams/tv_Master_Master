@@ -9,4 +9,7 @@ class DispGuardadosRepository (
         this.localDataSource.saveDisp(dispositivo)
         return true
     }
+    suspend fun getDispsGuardados(): List<DispTV> {
+        return localDataSource.getDispsGuardados()
+    }
 }
