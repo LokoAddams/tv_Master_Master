@@ -1,0 +1,264 @@
+package com.example.tvmaster
+
+//import com.connectsdk.sampler.fragments.BaseFragment
+import android.app.Activity
+import android.app.AlertDialog
+import android.text.InputType
+import android.util.Log
+import android.view.MenuItem
+import android.widget.EditText
+import com.connectsdk.device.ConnectableDevice
+import com.connectsdk.device.ConnectableDeviceListener
+import com.connectsdk.device.DevicePicker
+import com.connectsdk.discovery.DiscoveryManager
+import com.connectsdk.service.DeviceService
+import com.connectsdk.service.DeviceService.PairingType
+import com.connectsdk.service.capability.MediaPlayer
+import com.connectsdk.service.capability.VolumeControl
+import com.connectsdk.service.command.ServiceCommandError
+
+class Manager(a: Activity)
+{
+    var mTV: ConnectableDevice? = null
+    var dialog: AlertDialog? = null
+    var pairingAlertDialog: AlertDialog? = null
+    var pairingCodeDialog: AlertDialog? = null
+    var dp: DevicePicker? = null
+    var a : Activity = a
+
+    var connectItem: MenuItem? = null
+
+//    var mSectionsPagerAdapter: SectionsPagerAdapter? = null
+
+//    private var mDiscoveryManager: DiscoveryManager = DiscoveryManager.getInstance()
+
+//    var mViewPager: ViewPager? = null
+//    var actionBar: androidx.appcompat.app.ActionBar? = null
+
+
+
+    private val deviceListener: ConnectableDeviceListener = object : ConnectableDeviceListener {
+        override fun onPairingRequired(
+            device: ConnectableDevice,
+            service: DeviceService,
+            pairingType: PairingType
+        ) {
+            Log.d("2ndScreenAPP", "Connected to " + mTV!!.ipAddress)
+
+            when (pairingType) {
+                PairingType.FIRST_SCREEN -> {
+                    Log.d("2ndScreenAPP", "First Screen")
+                    pairingAlertDialog!!.show()
+                }
+
+                PairingType.PIN_CODE, PairingType.MIXED -> {
+                    Log.d("2ndScreenAPP", "Pin Code")
+                    pairingCodeDialog!!.show()
+                }
+
+                PairingType.NONE -> {}
+                else -> {}
+            }
+        }
+
+        override fun onConnectionFailed(device: ConnectableDevice, error: ServiceCommandError) {
+            Log.d("2ndScreenAPP", "onConnectFailed")
+            connectFailed(mTV)
+        }
+
+        override fun onDeviceReady(device: ConnectableDevice) { // 1ra funcion que se ejecuta al conectar con el tv?
+            Log.d("2ndScreenAPP", "onPairingSuccess")
+            if (pairingAlertDialog!!.isShowing) {
+                pairingAlertDialog!!.dismiss()
+            }
+            if (pairingCodeDialog!!.isShowing) {
+                pairingCodeDialog!!.dismiss()
+            }
+            registerSuccess(mTV)
+        }
+
+        override fun onDeviceDisconnected(device: ConnectableDevice) {
+            Log.d("2ndScreenAPP", "Device Disconnected")
+            connectEnded(mTV)
+            connectItem!!.setTitle("Connect")
+
+//            val frag: BaseFragment = mSectionsPagerAdapter.getFragment(mViewPager!!.currentItem)
+//            if (frag != null) {
+//                Toast.makeText(getApplicationContext(), "Device Disconnected", Toast.LENGTH_SHORT)
+//                    .show()
+//                frag.disableButtons()
+//            }
+        }
+
+        override fun onCapabilityUpdated(
+            device: ConnectableDevice,
+            added: List<String>,
+            removed: List<String>
+        ) {
+        }
+    }
+
+    init {
+        setupPicker()
+    }
+
+    val imageDevices: List<ConnectableDevice>
+        get() {
+            val imageDevices: MutableList<ConnectableDevice> = ArrayList()
+
+            for (device in DiscoveryManager.getInstance().compatibleDevices.values) {
+                if (device.hasCapability(MediaPlayer.Display_Image)) imageDevices.add(device)
+            }
+
+            return imageDevices
+        }
+
+
+
+    fun hConnectToggle() // funcoin que se ejecuta al pulsar el boton de desconectar?
+    {
+
+//        if (!this.isFinishing()) {
+            if (mTV != null) {
+                if (mTV!!.isConnected)
+                    mTV!!.disconnect()
+                println("hola2")
+                connectItem!!.setTitle("Connect")
+                mTV!!.removeListener(deviceListener)
+                mTV = null
+//                for (i in 0..<mSectionsPagerAdapter.getCount()) {
+//                    if (mSectionsPagerAdapter.getFragment(i) != null) {
+//                        mSectionsPagerAdapter.getFragment(i).setTv(null)
+//                    }
+//                }
+            } else  //muestra el dialogo para conectarnos si no hay un tv conectado
+
+                {
+                    println("algo2")
+                    println(DiscoveryManager.getInstance().getCompatibleDevices().values.toString())
+                    dialog!!.show()
+
+                }
+//        }
+    }
+
+    fun volumenUp(){
+        mTV!!.getCapability<VolumeControl>(VolumeControl::class.java).volumeUp(null)
+    }
+
+    private fun setupPicker() {
+        /**  Metodo usado en el onCreate para inicializar el dialogo de seleccion de tvs */
+        dp = DevicePicker(a)
+        dialog = dp!!.getPickerDialog(
+            "Device List"
+        ) { arg0, arg1, arg2, arg3 ->
+            mTV = arg0.getItemAtPosition(arg2) as ConnectableDevice
+            mTV!!.addListener(deviceListener)
+            mTV!!.setPairingType(null)
+            mTV!!.connect()
+//            connectItem!!.setTitle(mTV!!.friendlyName)
+            dp!!.pickDevice(mTV)
+        }
+
+        pairingAlertDialog = AlertDialog.Builder(a)
+            .setTitle("Pairing with TV")
+            .setMessage("Please confirm the connection on your TV")
+            .setPositiveButton("Okay", null)
+            .setNegativeButton("Cancel") { dialog, which ->
+                dp!!.cancelPicker()
+                hConnectToggle()
+            }
+            .create()
+
+        val input = EditText(a)
+        input.inputType = InputType.TYPE_CLASS_TEXT
+
+//        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+        pairingCodeDialog = AlertDialog.Builder(a)
+            .setTitle("Enter Pairing Code on TV")
+            .setView(input)
+            .setPositiveButton(
+                android.R.string.ok
+            ) { arg0, arg1 ->
+                if (mTV != null) {
+                    val value = input.text.toString().trim { it <= ' ' }
+                    mTV!!.sendPairingKey(value)
+//                    imm.hideSoftInputFromWindow(input.windowToken, 0)
+                }
+            }
+            .setNegativeButton(
+                android.R.string.cancel
+            ) { dialog, whichButton ->
+                dp!!.cancelPicker()
+                hConnectToggle()
+//                imm.hideSoftInputFromWindow(input.windowToken, 0)
+            }
+            .create()
+    }
+
+
+
+    fun registerSuccess(device: ConnectableDevice?) { // 2da funcion que se ejecuta al conectar con el tv?
+        Log.d("2ndScreenAPP", "successful register")
+
+//        val frag: BaseFragment = mSectionsPagerAdapter.getFragment(mViewPager!!.currentItem)
+//        if (frag != null) frag.setTv(mTV)
+    }
+
+    fun connectFailed(device: ConnectableDevice?) {
+        if (device != null) Log.d("2ndScreenAPP", "Failed to connect to " + device.ipAddress)
+
+        if (mTV != null) {
+            mTV!!.removeListener(deviceListener)
+            mTV!!.disconnect()
+            mTV = null
+        }
+    }
+
+    fun connectEnded(device: ConnectableDevice?) {
+        if (pairingAlertDialog!!.isShowing) {
+            pairingAlertDialog!!.dismiss()
+        }
+        if (pairingCodeDialog!!.isShowing) {
+            pairingCodeDialog!!.dismiss()
+        }
+
+//        if (mTV.isConnecting === false) {
+//            mTV!!.removeListener(deviceListener)
+//            mTV = null
+//        }
+    }
+
+
+
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        if (item.itemId == R.id.action_connect) {
+//            hConnectToggle()
+//            return true
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
+//
+//    override fun onTabUnselected(
+//        tab: androidx.appcompat.app.ActionBar.Tab,
+//        fragmentTransaction: FragmentTransaction
+//    ) {
+//    }
+//
+//    override fun onTabReselected(
+//        tab: androidx.appcompat.app.ActionBar.Tab,
+//        fragmentTransaction: FragmentTransaction
+//    ) {
+//    }
+//
+//    override fun onTabSelected(
+//        tab: androidx.appcompat.app.ActionBar.Tab,
+//        fragmentTransaction: FragmentTransaction
+//    ) {
+//        mViewPager!!.currentItem = tab.getPosition()
+//        setTitle(mSectionsPagerAdapter.getTitle(tab.getPosition()))
+//        val frag: BaseFragment = mSectionsPagerAdapter.getFragment(tab.getPosition())
+//        if (frag != null) frag.setTv(mTV)
+//    }
+}

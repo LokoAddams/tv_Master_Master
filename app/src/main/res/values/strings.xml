@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">TV Master</string>
+    <string name="conection">Conectando...</string>
+    <string name="failed_conection">No conectado</string>
+    <string name="large_failed_conection">Error de conexión\ncon el dispositivo.</string>
+    <string name="settings_title">Settings</string>
+    <string name="theme_option">Tema</string>
+    <string name="customize_buttons">Personalizar botones</string>
+    <string name="language_option">Idioma</string>
+    <string name="info_option">Información</string>
+    <string name="app_version">Versión: 1.0</string>
+    <string name="developers">Desarrolladores: .....</string>
+    <string name="created_with">Creado en Kotlin.....</string>
+    <string name="leave_feedback">Déjanos tu opinión:</string>
+    <string name="card01">Aplicaciones</string>
+    <string name="card02">Mando a distancia</string>
+    <string name="texto_card02">Controlar el televisor conectado.</string>
+    <string name="card03">Compartir contenido</string>
+    <string name="texto_card03">Reproducir fotos, videos y música del teléfono en el televisor.</string>
+</resources>

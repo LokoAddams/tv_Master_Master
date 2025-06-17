@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TV Master</string>
+    <string name="conection">Conecting...</string>
+    <string name="failed_conection">No conection</string>
+    <string name="large_failed_conection">Connection error with the device.</string>
+    <string name="settings_title">Settings</string>
+    <string name="theme_option">Theme</string>
+    <string name="customize_buttons">Customize buttons</string>
+    <string name="language_option">Language</string>
+    <string name="info_option">Information</string>
+    <string name="app_version">Version: 1.0</string>
+    <string name="developers">Developers: .....</string>
+    <string name="created_with">Created with Kotlin.....</string>
+    <string name="leave_feedback">Leave your feedback:</string>
+    <string name="card01">Apps</string>
+    <string name="card02">Remote control</string>
+    <string name="texto_card02">Control the connected TV.</string>
+    <string name="card03">Share content</string>
+    <string name="texto_card03">Play photos, videos, and music from your phone on your TV.</string>
+</resources>
