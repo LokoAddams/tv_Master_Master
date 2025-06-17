@@ -97,14 +97,7 @@ fun ControlUI(
                 icon = Icons.Filled.AddToQueue,
                 onClick = {
                     connectManager.hConnectToggle()
-                    val tvName = connectManager.mTV?.friendlyName
-                    nombre.value = if (!tvName.isNullOrBlank()) tvName else "Desconocido"
 
-                    // Guardar solo si el nombre no es "Desconocido"
-                    if (nombre.value != "Desconocido") {
-                        val dispositivo = DispTV(friendlyName = nombre.value)
-                        viewModel.guardarTV(dispositivo)
-                    }
                 },
                 buttonColor = Color.Cyan
             )
@@ -266,6 +259,19 @@ fun ControlUI(
         }
 
         Spacer(modifier = Modifier.height(16.dp))
+
+        Button(onClick = {
+            val tvName = connectManager.mTV?.friendlyName
+
+                    // Guardar solo si el nombre no es "Desconocido"
+                    if (tvName != null) {
+                        val dispositivo = DispTV(friendlyName = tvName)
+                        viewModel.guardarTV(dispositivo)
+                    }
+
+        }) {
+            Text("Guardar TV")
+        }
     }
 }
 
