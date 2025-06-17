@@ -48,8 +48,8 @@ fun AppNavigation() {
         composable(Screen.MenuScreen.route)
         {
             MenuUI(
-                onAgregarClick = {
-                    navController.navigate(Screen.DispositivosEncontradosScreen.route)
+                onControlClick = {
+                    navController.navigate(Screen.ControlScreen.route)
                 },
                 onAjustesClick = {
                     navController.navigate(Screen.SettingsScreen.route)

@@ -37,7 +37,7 @@ import com.example.tvmaster.R
 import com.example.tvmaster.ui.theme.TVMasterTheme
 
 @Composable
-fun MenuUI(onAgregarClick: () -> Unit, onAjustesClick: () -> Unit, onConexionClick: () -> Unit) {
+fun MenuUI(onControlClick: () -> Unit, onAjustesClick: () -> Unit, onConexionClick: () -> Unit) {
     val semiPlomo = Color(red = 40, green = 40, blue = 40, alpha = 180)
     val plomoClaro = Color(red = 61, green = 61, blue = 61)
     val plomo = Color(red = 40, green = 40, blue = 40)
@@ -82,12 +82,11 @@ fun MenuUI(onAgregarClick: () -> Unit, onAjustesClick: () -> Unit, onConexionCli
                     colors = ButtonDefaults.buttonColors(
                         containerColor = semiPlomo
                     ),
-                    onClick = { onAgregarClick() }
+                    onClick = { onControlClick() }
                 ) {
-                    Icon(Icons.Default.Add, contentDescription = "Agregar")
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        "Agregar",
+                        "Control",
                         fontSize = 22.sp,
                         style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
                     )
