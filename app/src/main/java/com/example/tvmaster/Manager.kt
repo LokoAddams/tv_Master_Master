@@ -92,7 +92,7 @@ class Manager(a: Activity)
         override fun onDeviceDisconnected(device: ConnectableDevice) {
             Log.d("2ndScreenAPP", "Device Disconnected")
             connectEnded(mTV)
-            connectItem!!.setTitle("Connect")
+//            connectItem!!.setTitle("Connect")
 
 //            val frag: BaseFragment = mSectionsPagerAdapter.getFragment(mViewPager!!.currentItem)
 //            if (frag != null) {
@@ -135,7 +135,7 @@ class Manager(a: Activity)
                 if (mTV!!.isConnected)
                     mTV!!.disconnect()
                 println("hola2")
-                connectItem!!.setTitle("Connect")
+//                connectItem!!.setTitle("Connect")
                 mTV!!.removeListener(deviceListener)
                 mTV = null
 //                for (i in 0..<mSectionsPagerAdapter.getCount()) {
