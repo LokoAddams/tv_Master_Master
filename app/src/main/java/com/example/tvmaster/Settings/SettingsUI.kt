@@ -1,5 +1,6 @@
 package com.example.tvmaster.Settings
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -8,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -20,17 +22,20 @@ import com.example.tvmaster.R
 
 
 @Composable
-fun SettingsUI(onBackClick: () -> Unit) {
+fun SettingsUI(isDarkTheme: Boolean, onToggleTheme: (Boolean) -> Unit, onBackClick: () -> Unit) {
+    var themeExpanded by rememberSaveable { mutableStateOf(false) }
+//    val isDarkTheme by viewModel.isDarkTheme
+
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black), // Fondo negro
+            .background(MaterialTheme.colorScheme.background), // Fondo negro
         contentAlignment = Alignment.TopCenter // Alineamos al centro superior
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFF121212)) // Fondo oscuro
+                .background(MaterialTheme.colorScheme.background) // Fondo oscuro
                 .padding(16.dp)
         ) {
 
@@ -47,21 +52,65 @@ fun SettingsUI(onBackClick: () -> Unit) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = "Volver",
-                        tint = Color.White
+                        tint = MaterialTheme.colorScheme.onBackground
                     )
                 }
                 Text(
                     text = "Ajustes",
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onBackground,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
                 )
             }
 
-            Spacer(modifier = Modifier.height(30.dp))
+            Spacer(modifier = Modifier
+                .height(15.dp)
+            )
 
-            // Opciones de ajustes
-            SettingsOption(stringResource(id = R.string.theme_option))
+            Column {
+                Text(
+                    text = "Theme",
+                    color = MaterialTheme.colorScheme.onBackground,
+                    fontSize = 20.sp,
+                    modifier = Modifier
+                        .padding(vertical = 8.dp)
+                        .clickable { themeExpanded = !themeExpanded },
+                    fontWeight = FontWeight.Bold
+                )
+                Divider(color = MaterialTheme.colorScheme.onBackground, thickness = 2.dp)
+            }
+
+            AnimatedVisibility(visible = themeExpanded) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    IconButton(onClick = {
+                        onToggleTheme(false)
+                        themeExpanded = false
+                    }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_sol),
+                            contentDescription = "Tema Claro",
+                            tint = if (!isDarkTheme) MaterialTheme.colorScheme.primary else Color.Gray
+                        )
+                    }
+
+                    IconButton(onClick = {
+                        onToggleTheme(true)
+                        themeExpanded = false
+                    }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_luna),
+                            contentDescription = "Tema Oscuro",
+                            tint = if (isDarkTheme) MaterialTheme.colorScheme.primary else Color.Gray
+                        )
+                    }
+                }
+            }
+
             SettingsOption(stringResource(id = R.string.customize_buttons))
             SettingsOption(stringResource(id = R.string.language_option))
             SettingsOption(stringResource(id = R.string.info_option))
@@ -73,7 +122,7 @@ fun SettingsUI(onBackClick: () -> Unit) {
                         "${stringResource(id = R.string.developers)}\n" +
                         "${stringResource(id = R.string.created_with)}\n" +
                         "${stringResource(id = R.string.leave_feedback)}",
-                color = Color.White,
+                color = MaterialTheme.colorScheme.onBackground,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Light
             )
@@ -88,11 +137,11 @@ fun SettingsOption(title: String) {
     Column {
         Text(
             text = title,
-            color = Color.White,
+            color = MaterialTheme.colorScheme.onBackground,
             fontSize = 16.sp,
             modifier = Modifier.padding(vertical = 8.dp)
         )
-        Divider(color = Color.White, thickness = 1.dp)
+        Divider(color = MaterialTheme.colorScheme.onBackground, thickness = 1.dp)
     }
 }
 

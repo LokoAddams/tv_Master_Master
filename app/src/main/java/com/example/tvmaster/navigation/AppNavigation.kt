@@ -28,7 +28,10 @@ import com.example.tvmaster.Menu.MenuUI
 import com.example.tvmaster.DispositivosEncontrados.DispositivosEncontradosUI
 
 @Composable
-fun AppNavigation() {
+fun AppNavigation(
+    isDarkTheme: Boolean,
+    onToggleTheme: (Boolean) -> Unit
+) {
     val navController = rememberNavController()
 
     NavHost(
@@ -79,6 +82,8 @@ fun AppNavigation() {
         }
         composable(Screen.SettingsScreen.route) {
             SettingsUI(
+                isDarkTheme = isDarkTheme,
+                onToggleTheme = onToggleTheme,
                 onBackClick = { navController.popBackStack() },
             )
         }

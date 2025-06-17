@@ -113,7 +113,8 @@ fun MenuUI(
                     modifier = Modifier
                         .height(50.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = plomoClaro
+                        containerColor = plomoClaro,
+                        contentColor = Color.White
                     ),
                     onClick = { onAjustesClick() }
                 ) {
@@ -134,21 +135,21 @@ fun MenuUI(
                     .width(320.dp)
                     .height(500.dp)
                     .clip(RoundedCornerShape(15.dp))
-                    .background(color = plomo)
+                    .background(MaterialTheme.colorScheme.background)
                     .padding(0.dp, 0.dp, 0.dp, 10.dp)
             ){
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp)
-                        .background(color = plomoClaro),
+                        .background(MaterialTheme.colorScheme.surface),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ){
                     Text(
                         "Televisores",
                         fontSize = 21.sp,
-                        color = Color.White,
+                        color = MaterialTheme.colorScheme.onSurface,
                         style = MaterialTheme.typography.titleLarge.copy()
                     )
                 }
@@ -180,10 +181,11 @@ fun MenuUI(
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = "No hay televisores guardados",
-                                color = Color.LightGray,
+                                text = "No hay televisores guardados.",
+                                color = MaterialTheme.colorScheme.error,
                                 fontSize = 16.sp,
-                                style = MaterialTheme.typography.titleMedium.copy()
+                                fontWeight = FontWeight.Bold,
+                                style = MaterialTheme.typography.labelLarge.copy()
                             )
                         }
                     }

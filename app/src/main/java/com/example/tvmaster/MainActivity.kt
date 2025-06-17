@@ -4,6 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.collectAsState
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.tvmaster.Settings.SettingsViewModel
 
 import com.example.tvmaster.navigation.AppNavigation
 import com.example.tvmaster.ui.theme.AppTheme
@@ -19,9 +22,14 @@ class MainActivity : ComponentActivity() {
     // https://developer.android.com/jetpack/compose/edge-to-edge
         enableEdgeToEdge()
         setContent {
-//            AppNavigation()
-            AppTheme {
-                AppNavigation()
+            val viewModel: SettingsViewModel = hiltViewModel()
+            var isDarkTheme = viewModel.isDarkTheme.collectAsState().value
+
+            AppTheme(darkTheme = isDarkTheme) {
+                AppNavigation(
+                    isDarkTheme = isDarkTheme,
+                    onToggleTheme = { viewModel.changeTheme(it) }
+                )
             }
         }
 
