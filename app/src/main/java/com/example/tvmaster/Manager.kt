@@ -154,67 +154,126 @@ class Manager(a: Activity)
 //        }
     }
 
-    fun volumenUp(){
+    fun volumenUp(): String{
+        if (mTV == null) {
+            return "Error: Tv no conectada"
+        }
+
         mTV!!.getCapability<VolumeControl>(VolumeControl::class.java).volumeUp(null)
+        return "Volumen Subido"
     }
 
-    fun volumenDown(){
+    fun volumenDown(): String{
+        if (mTV == null) {
+            return "Error: Tv no conectada"
+        }
         mTV!!.getCapability<VolumeControl>(VolumeControl::class.java).volumeDown(null)
+        return "Accion Exitosa"
     }
 
-    fun tvOff(){
+    fun tvOff(): String{
+        if (mTV == null) {
+            return "Error: Tv no conectada"
+        }
         mTV!!.getCapability<PowerControl>(PowerControl::class.java).powerOff(null)
+        return "Accion Exitosa"
     }
 
-    fun channelUp(){
+    fun channelUp(): String{
+        if (mTV == null) {
+            return "Error: Tv no conectada"
+        }
         mTV!!.getCapability(TVControl::class.java).channelUp(null)
+        return "Accion Exitosa"
     }
 
-    fun channelDown(){
+    fun channelDown(): String{
+        if (mTV == null) {
+            return "Error: Tv no conectada"
+        }
         mTV!!.getCapability(TVControl::class.java).channelDown(null)
+        return "Accion Exitosa"
     }
 
     private var mouseConnected = false
 
-    fun moveMouse(dx: Double, dy: Double) {
-
+    fun moveMouse(dx: Double, dy: Double): String {
+        if (mTV == null) {
+            return "Error: Tv no conectada"
+        }
         mTV!!.getCapability<MouseControl>(MouseControl::class.java)?.move(dx, dy)
+        return "Accion Exitosa"
     }
 
-    fun clickMouse() {
+    fun clickMouse(): String {
+        if (mTV == null) {
+            return "Error: Tv no conectada"
+        }
         mTV!!.getCapability<MouseControl>(MouseControl::class.java)?.click()
+        return "Accion Exitosa"
     }
 
 
-    fun back(){
+    fun back(): String{
+        if (mTV == null) {
+            return "Error: Tv no conectada"
+        }
         mTV!!.getCapability<KeyControl>(KeyControl::class.java).back(null)
+        return "Accion Exitosa"
     }
 
-    fun home (){
+    fun home (): String{
+        if (mTV == null) {
+            return "Error: Tv no conectada"
+        }
         mTV!!.getCapability<KeyControl>(KeyControl::class.java).home(null)
+        return "Accion Exitosa"
     }
 
-    fun okay(){
+    fun okay(): String{
+        if (mTV == null) {
+            return "Error: Tv no conectada"
+        }
         mTV!!.getCapability<KeyControl>(KeyControl::class.java).ok(null)
+        return "Accion Exitosa"
     }
 
-    fun up(){
+    fun up(): String{
+        if (mTV == null) {
+            return "Error: Tv no conectada"
+        }
         mTV!!.getCapability<KeyControl>(KeyControl::class.java).up(null)
+        return "Movimiento Conseguido"
     }
 
-    fun down(){
+    fun down(): String{
+        if (mTV == null) {
+            return "Error: Tv no conectada"
+        }
         mTV!!.getCapability<KeyControl>(KeyControl::class.java).down(null)
+        return "Movimiento Conseguido"
     }
 
-    fun left(){
+    fun left(): String{
+        if (mTV == null) {
+            return "Error: Tv no conectada"
+        }
         mTV!!.getCapability<KeyControl>(KeyControl::class.java).left(null)
+        return "Movimiento Conseguido"
     }
 
-    fun right(){
+    fun right(): String{
+        if (mTV == null) {
+            return "Error: Tv no conectada"
+        }
         mTV!!.getCapability<KeyControl>(KeyControl::class.java).right(null)
+        return "Movimiento Conseguido"
     }
 
-    fun lauch( appName: String){
+    fun lauch( appName: String): String{
+        if (mTV == null) {
+            return "Error: Tv no conectada"
+        }
 
         if(appName == "YouTube")
         {
@@ -392,7 +451,7 @@ class Manager(a: Activity)
             }
         }
 
-
+        return "App Lanzada"
     }
 
 
