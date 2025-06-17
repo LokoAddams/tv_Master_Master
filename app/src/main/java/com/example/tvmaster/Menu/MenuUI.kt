@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Tv
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.traceEventEnd
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,9 +36,23 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tvmaster.R
 import com.example.tvmaster.ui.theme.TVMasterTheme
+import androidx.compose.runtime.LaunchedEffect
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
-fun MenuUI(onControlClick: () -> Unit, onAjustesClick: () -> Unit, onConexionClick: () -> Unit) {
+fun MenuUI(
+    onControlClick: () -> Unit,
+    onAjustesClick: () -> Unit,
+    viewModel: MenuViewModel = hiltViewModel()
+)
+{
+
+    val uiState = viewModel.state.collectAsState()
+
+    // Cargar televisores una sola vez
+    LaunchedEffect(Unit) {
+        viewModel.cargarTelevisores()
+    }
     val semiPlomo = Color(red = 40, green = 40, blue = 40, alpha = 180)
     val plomoClaro = Color(red = 61, green = 61, blue = 61)
     val plomo = Color(red = 40, green = 40, blue = 40)
@@ -135,79 +150,39 @@ fun MenuUI(onControlClick: () -> Unit, onAjustesClick: () -> Unit, onConexionCli
                         style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
                     )
                 }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(55.dp)
-                        .padding(0.dp, 10.dp, 0.dp, 0.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ){
-                    Button(
-                        modifier = Modifier
-                            .height(40.dp)
-                            .width(250.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.White
-                        ),
-                        onClick = { onConexionClick() }
-                    ) {
-                        Text(
-                            "SALA MONCHE",
-                            fontSize = 20.sp,
-                            color = Color.Black,
-                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-                        )
+                // 👇 Aquí mostramos la lista o el mensaje según el estado
+                when (val state = uiState.value) {
+                    is MenuViewModel.TelevisoresState.Mostrar -> {
+                        Column(
+                            modifier = Modifier
+                                .verticalScroll(rememberScrollState())
+                                .padding(8.dp)
+                        ) {
+                            state.televisores.forEach { tv ->
+                                Text(
+                                    text = tv.friendlyName ?: "TV sin nombre",
+                                    color = Color.White,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 4.dp)
+                                        .background(Color.DarkGray, RoundedCornerShape(8.dp))
+                                        .padding(12.dp)
+                                )
+                            }
+                        }
                     }
-                }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(55.dp)
-                        .padding(0.dp, 10.dp, 0.dp, 0.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ){
-                    Button(
-                        modifier = Modifier
-                            .height(40.dp)
-                            .width(250.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.White
-                        ),
-                        onClick = { onConexionClick() }
-                    ) {
-                        Text(
-                            "COMEDOR",
-                            fontSize = 20.sp,
-                            color = Color.Black,
-                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-                        )
-                    }
-                }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(55.dp)
-                        .padding(0.dp, 10.dp, 0.dp, 0.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ){
-                    Button(
-                        modifier = Modifier
-                            .height(40.dp)
-                            .width(250.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.White
-                        ),
-                        onClick = { onConexionClick() }
-                    ) {
-                        Text(
-                            "ADDAMS LIVING",
-                            fontSize = 20.sp,
-                            color = Color.Black,
-                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-                        )
+
+                    is MenuViewModel.TelevisoresState.NoHayTelevisores -> {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "No hay televisores guardados",
+                                color = Color.LightGray,
+                                fontSize = 16.sp
+                            )
+                        }
                     }
                 }
             }

@@ -1,7 +1,14 @@
+import org.gradle.internal.declarativedsl.project.projectEvaluationSchema
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+
+    //For Hilt
+    alias(libs.plugins.hilt) // ✅ Plugin de Hilt
+    alias(libs.plugins.kapt)
+
 }
 
 android {
@@ -60,13 +67,14 @@ dependencies {
     implementation (libs.androidx.navigation.compose)
     implementation(project(":usecases"))
     implementation(project(":framework"))
+    implementation(project(":domain"))
+    implementation(project(":data"))
 
     implementation(libs.material3) // Usa la última versión disponible
 
     implementation(libs.androidx.material.icons.extended)
 
-    implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.hilt.android) // Usa la última versión disponible
+
     implementation(libs.connect.sdk.android){
         exclude(group = "com.android.support")
         exclude(group = "androidx.appcompat")
@@ -74,5 +82,12 @@ dependencies {
         exclude(group = "com.google.android.material")
     }
 
+    //for hilt
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.hilt.android) // Usa la última versión disponible
+    kapt(libs.hilt.compiler)
+}
 
+kapt {
+    correctErrorTypes = true
 }

@@ -15,21 +15,8 @@ import com.example.tvmaster.Manager
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
-class ControlViewModel @Inject constructor(
-    private val back: Back,
-    private val home: Home,
-    private val poweroff: PowerOff,
-    private val channelup: ChannelUp,
-    private val channeldown: ChannelDown,
-    private val microphone: Microphone,
-    private val volumenup: VolumenUp,
-    private val volumendown: VolumenDown
+class ControlViewModel(
+
 ) : ViewModel()
 {
-}
-
-class FakeControlViewModel : ViewModel() {
-    fun onApagarClicked() {
-    }
 }

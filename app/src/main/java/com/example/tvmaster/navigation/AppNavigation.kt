@@ -53,9 +53,6 @@ fun AppNavigation() {
                 },
                 onAjustesClick = {
                     navController.navigate(Screen.SettingsScreen.route)
-                },
-                onConexionClick = {
-                    navController.navigate(Screen.ConexionScreen.route)
                 }
             )
         }

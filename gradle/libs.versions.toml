@@ -66,6 +66,6 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid" }
 ksp = { id = "com.google.devtools.ksp", version.ref="ksp"}
-
+kapt = { id = "org.jetbrains.kotlin.kapt", version.ref="kotlin"}
 [bundles]
 room = [ "room-runtime", "room-ktx", "room-rxjava2","room-rxjava3", "room-guava", "room-paging"]
