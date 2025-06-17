@@ -35,7 +35,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tvmaster.R
-import com.example.tvmaster.ui.theme.TVMasterTheme
 import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 
@@ -56,6 +55,7 @@ fun MenuUI(
     val semiPlomo = Color(red = 40, green = 40, blue = 40, alpha = 180)
     val plomoClaro = Color(red = 61, green = 61, blue = 61)
     val plomo = Color(red = 40, green = 40, blue = 40)
+    val semiNegro = Color(red = 0, green = 0, blue = 0, alpha = 180)
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -68,14 +68,15 @@ fun MenuUI(
             modifier = Modifier
                 .fillMaxSize()
                 .background(
-                    Brush.verticalGradient(
-                        colors = listOf(
-                            Color(0xCC000000),
-                            Color.Transparent//Lo pone transparente
-                        ),
-                        startY = 0f,
-                        endY = Float.POSITIVE_INFINITY
-                    )
+//                    Brush.verticalGradient(
+//                        colors = listOf(
+//                            Color(0xCC000000),
+//                            Color.Transparent//Lo pone transparente
+//                        ),
+//                        startY = 0f,
+//                        endY = Float.POSITIVE_INFINITY
+//                    )
+                    color = semiNegro
                 )
         )
         Column(
@@ -95,15 +96,16 @@ fun MenuUI(
                     modifier = Modifier
                         .height(50.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = semiPlomo
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
                     ),
                     onClick = { onControlClick() }
                 ) {
-                    Spacer(modifier = Modifier.width(8.dp))
+//                    Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         "Control",
-                        fontSize = 22.sp,
-                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                        fontSize = 20.sp,
+                        style = MaterialTheme.typography.titleSmall.copy()
                     )
                 }
 
@@ -111,7 +113,7 @@ fun MenuUI(
                     modifier = Modifier
                         .height(50.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = semiPlomo
+                        containerColor = plomoClaro
                     ),
                     onClick = { onAjustesClick() }
                 ) {
@@ -119,8 +121,8 @@ fun MenuUI(
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         "Ajustes",
-                        fontSize = 22.sp,
-                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                        fontSize = 20.sp,
+                        style = MaterialTheme.typography.titleSmall.copy()
                     )
                 }
             }
@@ -147,7 +149,7 @@ fun MenuUI(
                         "Televisores",
                         fontSize = 21.sp,
                         color = Color.White,
-                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                        style = MaterialTheme.typography.titleLarge.copy()
                     )
                 }
                 // 👇 Aquí mostramos la lista o el mensaje según el estado
@@ -180,7 +182,8 @@ fun MenuUI(
                             Text(
                                 text = "No hay televisores guardados",
                                 color = Color.LightGray,
-                                fontSize = 16.sp
+                                fontSize = 16.sp,
+                                style = MaterialTheme.typography.titleMedium.copy()
                             )
                         }
                     }

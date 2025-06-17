@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 
 import com.example.tvmaster.navigation.AppNavigation
+import com.example.tvmaster.ui.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -18,8 +19,10 @@ class MainActivity : ComponentActivity() {
     // https://developer.android.com/jetpack/compose/edge-to-edge
         enableEdgeToEdge()
         setContent {
-            AppNavigation()
-
+//            AppNavigation()
+            AppTheme {
+                AppNavigation()
+            }
         }
 
 
