@@ -36,8 +36,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tvmaster.R
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-
+import com.example.tvmaster.service.Util
 @Composable
 fun MenuUI(
     onControlClick: () -> Unit,
@@ -45,12 +46,24 @@ fun MenuUI(
     viewModel: MenuViewModel = hiltViewModel()
 )
 {
+    val context = LocalContext.current
 
     val uiState = viewModel.state.collectAsState()
 
     // Cargar televisores una sola vez
     LaunchedEffect(Unit) {
         viewModel.cargarTelevisores()
+    }
+    LaunchedEffect(uiState.value) {
+        when (val state = uiState.value) {
+            is MenuViewModel.TelevisoresState.Mostrar -> {
+                Util.sendNotificatión(context, "Se recuperaron ${state.televisores.size} televisores.")
+            }
+            is MenuViewModel.TelevisoresState.NoHayTelevisores -> {
+                Util.sendNotificatión(context, "No se encontraron televisores guardados.")
+            }
+            else -> {}
+        }
     }
     val semiPlomo = Color(red = 40, green = 40, blue = 40, alpha = 180)
     val plomoClaro = Color(red = 61, green = 61, blue = 61)
