@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -33,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.tvmaster.Manager
+import com.example.tvmaster.R
 
 @Composable
 fun ControlUI(
@@ -49,8 +51,9 @@ fun ControlUI(
 
     var currentAppPage by remember { mutableStateOf(0) }
     val appPages = listOf(
-        listOf("Netflix", "YouTube", "Prime Video"),
-        listOf("Disney+", "HBO Max", "Spotify")
+        listOf("Netflix", "YouTube", "Google"),
+        listOf( "HBO Max", "Disney+", "Amazon Prime"),
+        listOf("Spotify", "Twitch", "Facebook")
     )
 
     var showMousepad by remember { mutableStateOf(false) }
@@ -203,8 +206,29 @@ fun ControlUI(
                 appPages[currentAppPage].forEach { appName ->
                     IconButton(
                         onClick = { connectManager.lauch(appName) },
+                        modifier = Modifier.size(60.dp)
                     )   {
-                        Text( text = appName, color = Color.White)
+                        Icon(
+                            painter = painterResource(
+                                id = when (appName) {
+                                    "Netflix" -> R.drawable.netflix
+                                    "YouTube" -> R.drawable.youtube
+                                    "Google" -> R.drawable.google
+                                    "HBO Max" -> R.drawable.hbo_max
+                                    "Disney+" -> R.drawable.disney
+                                    "Amazon Prime" -> R.drawable.amazon_prime
+                                    "Spotify" -> R.drawable.spotify
+                                    "Twitch" -> R.drawable.twitch
+                                    "Facebook" -> R.drawable.facebook
+
+                                    else -> R.drawable.ic_launcher_foreground
+                                }
+                            ),
+                            contentDescription = appName,
+                            tint = Color.Unspecified,
+                            modifier = Modifier.size(300.dp)
+                        )
+
                     }
                 }
             }
