@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/tvmaster">
+    <target android:name="wave01"
+        android:animation="@animator/desvanecer_wave01" />
+    <target android:name="wave02"
+        android:animation="@animator/desvanecer_wave02" />
+    <target android:name="wave03"
+        android:animation="@animator/desvanecer_wave03" />
+</animated-vector>

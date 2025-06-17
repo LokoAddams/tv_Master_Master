@@ -33,7 +33,7 @@ fun AppNavigation() {
 
     NavHost(
         navController = navController,
-        startDestination = Screen.ControlScreen.route,
+        startDestination = Screen.SplashScreen.route,
         enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None },
         popEnterTransition = { EnterTransition.None },
@@ -42,7 +42,9 @@ fun AppNavigation() {
     {
         composable(Screen.SplashScreen.route)
         {
-            SplashUI(navController)
+            SplashUI(onSuccess = {
+                navController.navigate(Screen.MenuScreen.route)
+            })
         }
 
         composable(Screen.MenuScreen.route)
