@@ -25,6 +25,9 @@ class Manager(a: Activity)
     var pairingCodeDialog: AlertDialog? = null
     var dp: DevicePicker? = null
     var a : Activity = a
+    ///algo
+    ///algo
+    ///alkg9o
 
     var connectItem: MenuItem? = null
 
