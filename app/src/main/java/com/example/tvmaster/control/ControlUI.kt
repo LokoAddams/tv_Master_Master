@@ -5,7 +5,10 @@ import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.drag
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -82,43 +85,65 @@ fun ControlUI(
                 .padding(horizontal = 32.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-//            ControlButton(icon = Icons.Filled.PowerSettingsNew, onClick = { viewModel.onApagarClicked() }, buttonColor = Color.Red)
-            ControlButton(icon = Icons.Filled.Home, onClick = {connectManager.hConnectToggle()}, buttonColor = Color.Blue)
+            ControlButton(icon = Icons.Filled.PowerSettingsNew, onClick = { connectManager.tvOff() }, buttonColor = Color.Red)
+            ControlButton(icon = Icons.Filled.AddToQueue , onClick = {connectManager.hConnectToggle()}, buttonColor = Color.Cyan)
+            ControlButton(icon = Icons.Filled.Home, onClick = {connectManager.home()}, buttonColor = Color.Blue)
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-
-        // Navegación tipo Mousepad o Flechas
         if (showMousepad) {
+            var lastOffset by remember { mutableStateOf<Offset?>(null) }
+
             Box(
                 modifier = Modifier
                     .size(200.dp)
                     .clip(RoundedCornerShape(16.dp))
                     .background(Color.DarkGray)
                     .pointerInput(Unit) {
-                        detectTapGestures(
-                            onTap = { offset: Offset ->
-                                println("Tap en el mousepad en ${offset.x}, ${offset.y}")
+                        awaitEachGesture {
+                            val down = awaitFirstDown()
+                            lastOffset = down.position
+                            var moved = false
+
+                            drag(down.id) { change ->
+                                val currentOffset = change.position
+                                lastOffset?.let { last ->
+                                    val dx = (currentOffset.x - last.x).toDouble() * 10
+                                    val dy = (currentOffset.y - last.y).toDouble() * 10
+                                    if (dx != 0.0 || dy != 0.0) {
+                                        connectManager.moveMouse(dx, dy)
+                                        moved = true
+                                    }
+                                }
+                                lastOffset = currentOffset
+                                change.consume()
                             }
-                        )
+
+                            if (!moved) {
+                                connectManager.clickMouse()
+                            }
+
+                            lastOffset = null
+                        }
                     },
                 contentAlignment = Alignment.Center
             ) {
                 Text("Mousepad", color = Color.White)
             }
-        } else {
+        }
+        else {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                ControlButton(icon = Icons.Filled.KeyboardArrowUp, onClick = { }, buttonColor = Color.LightGray)
+                ControlButton(icon = Icons.Filled.KeyboardArrowUp, onClick = { connectManager.up() }, buttonColor = Color.LightGray)
                 Spacer(modifier = Modifier.height(20.dp))
                 Row(horizontalArrangement = Arrangement.Center) {
-                    ControlButton(icon = Icons.AutoMirrored.Filled.KeyboardArrowLeft, onClick = { }, buttonColor = Color.LightGray)
+                    ControlButton(icon = Icons.AutoMirrored.Filled.KeyboardArrowLeft, onClick = { connectManager.left() }, buttonColor = Color.LightGray)
                     Spacer(modifier = Modifier.width(20.dp))
-                    ControlButtonWithText(onClick = { /* Acción OK */ }, buttonColor = Color.Green, text = "OK")
+                    ControlButtonWithText(onClick = { connectManager.okay() }, buttonColor = Color.Green, text = "OK")
                     Spacer(modifier = Modifier.width(20.dp))
-                    ControlButton(icon = Icons.AutoMirrored.Filled.KeyboardArrowRight, onClick = { }, buttonColor = Color.LightGray)
+                    ControlButton(icon = Icons.AutoMirrored.Filled.KeyboardArrowRight, onClick = { connectManager.right() }, buttonColor = Color.LightGray)
                 }
                 Spacer(modifier = Modifier.height(20.dp))
-                ControlButton(icon = Icons.Filled.KeyboardArrowDown, onClick = { }, buttonColor = Color.LightGray)
+                ControlButton(icon = Icons.Filled.KeyboardArrowDown, onClick = { connectManager.down() }, buttonColor = Color.LightGray)
             }
         }
 
@@ -136,7 +161,7 @@ fun ControlUI(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 ControlButton(icon = Icons.AutoMirrored.Filled.VolumeUp, onClick = {connectManager.volumenUp()}, buttonColor = Color.Gray)
-                ControlButton(icon = Icons.AutoMirrored.Filled.VolumeDown, onClick = { }, buttonColor = Color.Gray)
+                ControlButton(icon = Icons.AutoMirrored.Filled.VolumeDown, onClick = { connectManager.volumenDown()}, buttonColor = Color.Gray)
             }
 
             // Botón Atrás centrado verticalmente usando un Box
@@ -146,7 +171,7 @@ fun ControlUI(
                     .width(70.dp), // Ajusta el ancho si es necesario
                 contentAlignment = Alignment.Center
             ) {
-                ControlButton(icon = Icons.AutoMirrored.Filled.ArrowBack, onClick = { /* Acción atrás */ }, buttonColor = Color.Gray)
+                ControlButton(icon = Icons.AutoMirrored.Filled.ArrowBack, onClick = { connectManager.back() }, buttonColor = Color.Gray)
             }
 
             Column(
@@ -155,8 +180,8 @@ fun ControlUI(
                     .padding(8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                ControlButton(icon = Icons.Default.Add, onClick = { }, buttonColor = Color.Gray)
-                ControlButton(icon = Icons.Default.Remove, onClick = { }, buttonColor = Color.Gray)
+                ControlButton(icon = Icons.Default.Add, onClick = { connectManager.channelUp() }, buttonColor = Color.Gray)
+                ControlButton(icon = Icons.Default.Remove, onClick = { connectManager.channelDown() }, buttonColor = Color.Gray)
             }
         }
 
@@ -176,12 +201,10 @@ fun ControlUI(
 
             Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.weight(1f)) {
                 appPages[currentAppPage].forEach { appName ->
-                    Box(
-                        modifier = Modifier
-                            .background(Color.DarkGray, RoundedCornerShape(8.dp))
-                            .padding(horizontal = 12.dp, vertical = 8.dp)
-                    ) {
-                        Text(text = appName, color = Color.White)
+                    IconButton(
+                        onClick = { connectManager.lauch(appName) },
+                    )   {
+                        Text( text = appName, color = Color.White)
                     }
                 }
             }

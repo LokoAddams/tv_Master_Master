@@ -13,9 +13,16 @@ import com.connectsdk.device.DevicePicker
 import com.connectsdk.discovery.DiscoveryManager
 import com.connectsdk.service.DeviceService
 import com.connectsdk.service.DeviceService.PairingType
+import com.connectsdk.service.capability.KeyControl
+import com.connectsdk.service.capability.Launcher
+import com.connectsdk.service.capability.Launcher.AppLaunchListener
 import com.connectsdk.service.capability.MediaPlayer
+import com.connectsdk.service.capability.MouseControl
+import com.connectsdk.service.capability.PowerControl
+import com.connectsdk.service.capability.TVControl
 import com.connectsdk.service.capability.VolumeControl
 import com.connectsdk.service.command.ServiceCommandError
+import com.connectsdk.service.sessions.LaunchSession
 
 class Manager(a: Activity)
 {
@@ -147,6 +154,125 @@ class Manager(a: Activity)
 
     fun volumenUp(){
         mTV!!.getCapability<VolumeControl>(VolumeControl::class.java).volumeUp(null)
+    }
+
+    fun volumenDown(){
+        mTV!!.getCapability<VolumeControl>(VolumeControl::class.java).volumeDown(null)
+    }
+
+    fun tvOff(){
+        mTV!!.getCapability<PowerControl>(PowerControl::class.java).powerOff(null)
+    }
+
+    fun channelUp(){
+        mTV!!.getCapability(TVControl::class.java).channelUp(null)
+    }
+
+    fun channelDown(){
+        mTV!!.getCapability(TVControl::class.java).channelDown(null)
+    }
+
+    private var mouseConnected = false
+
+    fun moveMouse(dx: Double, dy: Double) {
+
+        mTV!!.getCapability<MouseControl>(MouseControl::class.java)?.move(dx, dy)
+    }
+
+    fun clickMouse() {
+        mTV!!.getCapability<MouseControl>(MouseControl::class.java)?.click()
+    }
+
+
+    fun back(){
+        mTV!!.getCapability<KeyControl>(KeyControl::class.java).back(null)
+    }
+
+    fun home (){
+        mTV!!.getCapability<KeyControl>(KeyControl::class.java).home(null)
+    }
+
+    fun okay(){
+        mTV!!.getCapability<KeyControl>(KeyControl::class.java).ok(null)
+    }
+
+    fun up(){
+        mTV!!.getCapability<KeyControl>(KeyControl::class.java).up(null)
+    }
+
+    fun down(){
+        mTV!!.getCapability<KeyControl>(KeyControl::class.java).down(null)
+    }
+
+    fun left(){
+        mTV!!.getCapability<KeyControl>(KeyControl::class.java).left(null)
+    }
+
+    fun right(){
+        mTV!!.getCapability<KeyControl>(KeyControl::class.java).right(null)
+    }
+
+    fun lauch( appName: String){
+
+        if(appName == "YouTube")
+        {
+
+            mTV!!.getCapability<Launcher>(Launcher::class.java).launchYouTube(
+                "eRsGyueVLvQ",
+                object : AppLaunchListener {
+                    override fun onSuccess(session: LaunchSession) {
+
+                    }
+
+                    override fun onError(error: ServiceCommandError) {
+                    }
+                })
+        }else{
+
+            if( appName == "Netflix")
+            {
+                mTV!!.getCapability<Launcher>(Launcher::class.java).launchNetflix(
+                    "70217913", object : AppLaunchListener {
+                        override fun onSuccess(session: LaunchSession) {
+
+
+                        }
+
+                        override fun onError(error: ServiceCommandError) {
+                        }
+                    }
+                )
+            }
+            else
+            {
+
+                if( appName == "Prime Video")
+                {
+
+                }
+                else
+                {
+
+                    if( appName == "Disney+")
+                    {
+
+                    }
+
+                    if( appName == "HBO Max")
+                    {
+
+                    }
+
+                    if( appName == "Spotify")
+                    {
+
+                    }
+                }
+
+
+            }
+
+        }
     }
 
     private fun setupPicker() {
