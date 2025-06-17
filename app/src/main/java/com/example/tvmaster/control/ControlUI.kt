@@ -108,8 +108,8 @@ fun ControlUI(
                             drag(down.id) { change ->
                                 val currentOffset = change.position
                                 lastOffset?.let { last ->
-                                    val dx = (currentOffset.x - last.x).toDouble() * 10
-                                    val dy = (currentOffset.y - last.y).toDouble() * 10
+                                    val dx = (currentOffset.x - last.x).toDouble() / 2
+                                    val dy = (currentOffset.y - last.y).toDouble() / 2
                                     if (dx != 0.0 || dy != 0.0) {
                                         connectManager.moveMouse(dx, dy)
                                         moved = true

@@ -59,6 +59,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation (libs.androidx.navigation.compose)
     implementation(project(":usecases"))
+    implementation(project(":framework"))
+
     implementation(libs.material3) // Usa la última versión disponible
 
     implementation(libs.androidx.material.icons.extended)
@@ -66,7 +68,10 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.hilt.android) // Usa la última versión disponible
     implementation(libs.connect.sdk.android){
-        exclude(group = "com.android.support", module = "support-v4")
+        exclude(group = "com.android.support")
+        exclude(group = "androidx.appcompat")
+        exclude(group = "androidx.core")
+        exclude(group = "com.google.android.material")
     }
 
 
