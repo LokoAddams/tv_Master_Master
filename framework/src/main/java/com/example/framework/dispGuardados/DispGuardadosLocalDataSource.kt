@@ -20,4 +20,9 @@ class DispGuardadosLocalDataSource (
         val entities = dispGuardadoDAO.getAllDisps()
         return entities.map { it.toDomain() }
     }
+
+    override suspend fun existeDispTV(friendlyName: String): Boolean {
+        val count = dispGuardadoDAO.countByFriendlyName(friendlyName)
+        return count > 0
+    }
 }

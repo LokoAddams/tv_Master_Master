@@ -6,7 +6,7 @@ import com.example.domain.DispTV
 class SaveDispTV (
     val repository: DispGuardadosRepository
 ){
-    suspend fun invoke(dispositivo: DispTV) {
+    suspend operator fun invoke(dispositivo: DispTV) {
         repository.saveDisp(dispositivo)
     }
 }

@@ -12,4 +12,7 @@ interface IDispGuardadoDAO {
 
     @Query("SELECT * FROM disp_guardados")
     suspend fun getAllDisps(): List<DispGuardado>
+
+    @Query("SELECT COUNT(*) FROM disp_guardados WHERE friendlyName = :friendlyName")
+    suspend fun countByFriendlyName(friendlyName: String): Int
 }

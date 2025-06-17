@@ -33,22 +33,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.domain.DispTV
 import com.example.tvmaster.Manager
 import com.example.tvmaster.R
 
 @Composable
 fun ControlUI(
-    onClick: () -> Unit)
-{
+    onClick: () -> Unit,
+    viewModel: ControlViewModel = hiltViewModel()
+){
 
     val context = LocalContext.current
     val activity = context as? Activity ?: return
-
-
-
     // Solo una vez: crear manager y pasarle el activity
     val connectManager = remember { Manager(activity) }
+
 
     var currentAppPage by remember { mutableStateOf(0) }
     val appPages = listOf(
@@ -90,7 +91,23 @@ fun ControlUI(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             ControlButton(icon = Icons.Filled.PowerSettingsNew, onClick = { connectManager.tvOff() }, buttonColor = Color.Red)
-            ControlButton(icon = Icons.Filled.AddToQueue , onClick = {connectManager.hConnectToggle()}, buttonColor = Color.Cyan)
+            val nombre = remember { mutableStateOf("Desconocido") }
+
+            ControlButton(
+                icon = Icons.Filled.AddToQueue,
+                onClick = {
+                    connectManager.hConnectToggle()
+                    val tvName = connectManager.mTV?.friendlyName
+                    nombre.value = if (!tvName.isNullOrBlank()) tvName else "Desconocido"
+
+                    // Guardar solo si el nombre no es "Desconocido"
+                    if (nombre.value != "Desconocido") {
+                        val dispositivo = DispTV(friendlyName = nombre.value)
+                        viewModel.guardarTV(dispositivo)
+                    }
+                },
+                buttonColor = Color.Cyan
+            )
             ControlButton(icon = Icons.Filled.Home, onClick = {connectManager.home()}, buttonColor = Color.Blue)
         }
 

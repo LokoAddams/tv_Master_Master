@@ -6,6 +6,7 @@ import com.example.data.ILocalDataSource
 import com.example.framework.dispGuardados.DispGuardadosLocalDataSource
 import com.example.usecases.GetDispTV
 import com.example.usecases.SaveDispTV
+import com.example.usecases.existeDispTV
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,6 +29,7 @@ object AppModule {
         return DispGuardadosRepository(localDataSource)
     }
 
+    //USECASES
     @Provides
     @Singleton
     fun provideGetDispTV(repository: DispGuardadosRepository): GetDispTV {
@@ -38,5 +40,12 @@ object AppModule {
     @Singleton
     fun provideSaveDispTV(repository: DispGuardadosRepository): SaveDispTV {
         return SaveDispTV(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideExisteDispTV(
+        repository: DispGuardadosRepository): existeDispTV {
+        return existeDispTV(repository)
     }
 }

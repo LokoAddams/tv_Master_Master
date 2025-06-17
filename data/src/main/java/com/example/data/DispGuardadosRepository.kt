@@ -12,4 +12,8 @@ class DispGuardadosRepository (
     suspend fun getDispsGuardados(): List<DispTV> {
         return localDataSource.getDispsGuardados()
     }
+
+    suspend fun existeDispTV(friendlyName: String): Boolean {
+        return localDataSource.existeDispTV(friendlyName)
+    }
 }
