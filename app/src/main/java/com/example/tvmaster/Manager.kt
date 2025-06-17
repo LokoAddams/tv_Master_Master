@@ -154,8 +154,13 @@ class Manager(a: Activity)
 //        }
     }
 
-    fun volumenUp(){
+    fun volumenUp(): String{
+        if (mTV == null) {
+            return "Error: Tv no conectada"
+        }
+
         mTV!!.getCapability<VolumeControl>(VolumeControl::class.java).volumeUp(null)
+        return "Volumen Subido"
     }
 
     fun volumenDown(){
@@ -408,6 +413,7 @@ class Manager(a: Activity)
             mTV!!.connect()
 //            connectItem!!.setTitle(mTV!!.friendlyName)
             dp!!.pickDevice(mTV)
+
         }
 
         pairingAlertDialog = AlertDialog.Builder(a)

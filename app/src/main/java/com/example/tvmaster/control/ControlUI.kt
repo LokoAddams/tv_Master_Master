@@ -2,6 +2,7 @@ package com.example.tvmaster.control
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.graphics.Color.rgb
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -141,7 +142,7 @@ fun ControlUI(
                 Row(horizontalArrangement = Arrangement.Center) {
                     ControlButton(icon = Icons.AutoMirrored.Filled.KeyboardArrowLeft, onClick = { connectManager.left() }, buttonColor = Color.LightGray)
                     Spacer(modifier = Modifier.width(20.dp))
-                    ControlButtonWithText(onClick = { connectManager.okay() }, buttonColor = Color.Green, text = "OK")
+                    ControlButtonWithText(onClick = { connectManager.okay() }, buttonColor = Color(rgb(81, 247, 89)) , text = "OK")
                     Spacer(modifier = Modifier.width(20.dp))
                     ControlButton(icon = Icons.AutoMirrored.Filled.KeyboardArrowRight, onClick = { connectManager.right() }, buttonColor = Color.LightGray)
                 }
