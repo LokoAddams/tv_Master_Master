@@ -7,6 +7,7 @@ import android.text.InputType
 import android.util.Log
 import android.view.MenuItem
 import android.widget.EditText
+import com.connectsdk.core.AppInfo
 import com.connectsdk.device.ConnectableDevice
 import com.connectsdk.device.ConnectableDeviceListener
 import com.connectsdk.device.DevicePicker
@@ -16,6 +17,7 @@ import com.connectsdk.service.DeviceService.PairingType
 import com.connectsdk.service.capability.KeyControl
 import com.connectsdk.service.capability.Launcher
 import com.connectsdk.service.capability.Launcher.AppLaunchListener
+import com.connectsdk.service.capability.Launcher.AppListListener
 import com.connectsdk.service.capability.MediaPlayer
 import com.connectsdk.service.capability.MouseControl
 import com.connectsdk.service.capability.PowerControl
@@ -246,34 +248,153 @@ class Manager(a: Activity)
             else
             {
 
-                if( appName == "Prime Video")
-                {
 
-                }
-                else
-                {
 
-                    if( appName == "Disney+")
+                    if( appName == "Google")
                     {
+                        mTV!!.getCapability<Launcher>(Launcher::class.java).launchBrowser(
+                            "https://google.com/", object : AppLaunchListener {
+                                override fun onSuccess(session: LaunchSession) {
+
+                                }
+
+                                override fun onError(error: ServiceCommandError) {
+                                }
+                            }
+                        )
+                    }else
+                    {
+
+                        if( appName == "Amazon Prime")
+                        {
+                            mTV!!.getCapability<Launcher>(Launcher::class.java).launchApp(
+                                "amazon", object : AppLaunchListener {
+                                    override fun onError(error: ServiceCommandError) {
+
+                                    }
+
+                                    override fun onSuccess(`object`: LaunchSession) {
+
+                                    }
+                                }
+                            )
+
+                        }
+                        else
+                        {
+                            if( appName == "HBO Max")
+                            {
+                                mTV!!.getCapability<Launcher>(Launcher::class.java).launchApp(
+                                    "com.hbo.hbomax-2017", object : AppLaunchListener {
+                                        override fun onError(error: ServiceCommandError) {
+
+                                        }
+
+                                        override fun onSuccess(`object`: LaunchSession) {
+
+                                        }
+                                    }
+                                )
+                            }
+                            else {
+                                if (appName == "Disney+") {
+                                    mTV!!.getCapability<Launcher>(Launcher::class.java).launchApp(
+                                        "com.disney.disneyplus-prod", object : AppLaunchListener {
+                                            override fun onError(error: ServiceCommandError) {
+
+                                            }
+
+                                            override fun onSuccess(`object`: LaunchSession) {
+
+                                            }
+                                        }
+                                    )
+                                } else
+                                {
+                                    if( appName == "Busqueda" )
+                                    {
+                                        mTV!!.getCapability<Launcher>(Launcher::class.java).launchApp(
+                                            "com.webos.app.voice", object : AppLaunchListener {
+                                                override fun onError(error: ServiceCommandError) {
+
+                                                }
+
+                                                override fun onSuccess(`object`: LaunchSession) {
+
+                                                }
+                                            }
+                                        )
+                                    }
+                                    else
+                                    {
+                                        if( appName == "Spotify" )
+                                        {
+                                            mTV!!.getCapability<Launcher>(Launcher::class.java).launchApp(
+                                                "spotify-beehive", object : AppLaunchListener {
+                                                    override fun onError(error: ServiceCommandError) {
+
+                                                    }
+
+                                                    override fun onSuccess(`object`: LaunchSession) {
+
+                                                    }
+                                                }
+                                            )
+                                        }
+                                        else
+                                        {
+                                            if( appName == "Twitch" )
+                                            {
+                                                mTV!!.getCapability<Launcher>(Launcher::class.java).launchApp(
+                                                    "tv.twitch.tv.starshot.lg", object : AppLaunchListener {
+                                                        override fun onError(error: ServiceCommandError) {
+
+                                                        }
+
+                                                        override fun onSuccess(`object`: LaunchSession) {
+
+                                                        }
+                                                    }
+                                                )
+                                            }
+                                            else
+                                            {
+                                                if( appName == "Facebook" )
+                                                {
+                                                    mTV!!.getCapability<Launcher>(Launcher::class.java).launchApp(
+                                                        "com.facebook.app.fbwatch", object : AppLaunchListener {
+                                                            override fun onError(error: ServiceCommandError) {
+
+                                                            }
+
+                                                            override fun onSuccess(`object`: LaunchSession) {
+
+                                                            }
+                                                        }
+                                                    )
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                }
+                            }
+
+                        }
+
+
 
                     }
 
-                    if( appName == "HBO Max")
-                    {
 
-                    }
-
-                    if( appName == "Spotify")
-                    {
-
-                    }
-                }
 
 
             }
-
         }
+
+
     }
+
 
     private fun setupPicker() {
         /**  Metodo usado en el onCreate para inicializar el dialogo de seleccion de tvs */
