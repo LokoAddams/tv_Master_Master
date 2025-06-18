@@ -148,17 +148,32 @@ fun ControlUI(
         }
         else {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                ControlButton(icon = Icons.Filled.KeyboardArrowUp, onClick = {Util.sendNotificatión(context, connectManager.up()) }, buttonColor = Color.LightGray)
+                ControlButton(icon = Icons.Filled.KeyboardArrowUp, onClick = {
+                    if("Error: Tv no conectada" == connectManager.up())
+                        Util.sendNotificatión(context, "Error: Tv no conectada")
+                }, buttonColor = Color.LightGray)
                 Spacer(modifier = Modifier.height(20.dp))
                 Row(horizontalArrangement = Arrangement.Center) {
-                    ControlButton(icon = Icons.AutoMirrored.Filled.KeyboardArrowLeft, onClick = {Util.sendNotificatión(context, connectManager.left()) }, buttonColor = Color.LightGray)
+                    ControlButton(icon = Icons.AutoMirrored.Filled.KeyboardArrowLeft, onClick = {
+                        if("Error: Tv no conectada" == connectManager.left())
+                            Util.sendNotificatión(context, "Error: Tv no conectada")
+                    }, buttonColor = Color.LightGray)
                     Spacer(modifier = Modifier.width(20.dp))
-                    ControlButtonWithText(onClick = {Util.sendNotificatión(context, connectManager.okay()) }, buttonColor = Color(rgb(81, 247, 89)) , text = "OK")
+                    ControlButtonWithText(onClick = {
+                        if("Error: Tv no conectada" == connectManager.okay())
+                            Util.sendNotificatión(context, "Error: Tv no conectada")
+                    }, buttonColor = Color(rgb(81, 247, 89)) , text = "OK")
                     Spacer(modifier = Modifier.width(20.dp))
-                    ControlButton(icon = Icons.AutoMirrored.Filled.KeyboardArrowRight, onClick = {Util.sendNotificatión(context, connectManager.right()) }, buttonColor = Color.LightGray)
+                    ControlButton(icon = Icons.AutoMirrored.Filled.KeyboardArrowRight, onClick = {
+                        if("Error: Tv no conectada" == connectManager.right())
+                            Util.sendNotificatión(context, "Error: Tv no conectada")
+                    }, buttonColor = Color.LightGray)
                 }
                 Spacer(modifier = Modifier.height(20.dp))
-                ControlButton(icon = Icons.Filled.KeyboardArrowDown, onClick = {Util.sendNotificatión(context, connectManager.down()) }, buttonColor = Color.LightGray)
+                ControlButton(icon = Icons.Filled.KeyboardArrowDown, onClick = {
+                    if("Error: Tv no conectada" == connectManager.down())
+                    Util.sendNotificatión(context, "Error: Tv no conectada")
+                                                                               }, buttonColor = Color.LightGray)
             }
         }
 
@@ -175,8 +190,14 @@ fun ControlUI(
                     .padding(8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                ControlButton(icon = Icons.AutoMirrored.Filled.VolumeUp, onClick = { Util.sendNotificatión(context, connectManager.volumenUp())}, buttonColor = Color.Gray)
-                ControlButton(icon = Icons.AutoMirrored.Filled.VolumeDown, onClick = { Util.sendNotificatión(context,connectManager.volumenDown())}, buttonColor = Color.Gray)
+                ControlButton(icon = Icons.AutoMirrored.Filled.VolumeUp, onClick = {
+                    if("Error: Tv no conectada" == connectManager.volumenUp())
+                        Util.sendNotificatión(context, "Error: Tv no conectada")
+                }, buttonColor = Color.Gray)
+                ControlButton(icon = Icons.AutoMirrored.Filled.VolumeDown, onClick = {
+                    if("Error: Tv no conectada" == connectManager.volumenDown())
+                        Util.sendNotificatión(context, "Error: Tv no conectada")
+                }, buttonColor = Color.Gray)
             }
 
             // Botón Atrás centrado verticalmente usando un Box
@@ -186,7 +207,10 @@ fun ControlUI(
                     .width(70.dp), // Ajusta el ancho si es necesario
                 contentAlignment = Alignment.Center
             ) {
-                ControlButton(icon = Icons.AutoMirrored.Filled.ArrowBack, onClick = { Util.sendNotificatión(context,connectManager.back()) }, buttonColor = Color.Gray)
+                ControlButton(icon = Icons.AutoMirrored.Filled.ArrowBack, onClick = {
+                    if("Error: Tv no conectada" == connectManager.back())
+                        Util.sendNotificatión(context, "Error: Tv no conectada")
+                }, buttonColor = Color.Gray)
             }
 
             Column(
@@ -195,8 +219,14 @@ fun ControlUI(
                     .padding(8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                ControlButton(icon = Icons.Default.Add, onClick = { Util.sendNotificatión(context,connectManager.channelUp()) }, buttonColor = Color.Gray)
-                ControlButton(icon = Icons.Default.Remove, onClick = { Util.sendNotificatión(context,connectManager.channelDown()) }, buttonColor = Color.Gray)
+                ControlButton(icon = Icons.Default.Add, onClick = {
+                    if("Error: Tv no conectada" == connectManager.channelUp())
+                        Util.sendNotificatión(context, "Error: Tv no conectada")
+                }, buttonColor = Color.Gray)
+                ControlButton(icon = Icons.Default.Remove, onClick = {
+                    if("Error: Tv no conectada" == connectManager.channelDown())
+                        Util.sendNotificatión(context, "Error: Tv no conectada")
+                }, buttonColor = Color.Gray)
             }
         }
 
@@ -217,7 +247,10 @@ fun ControlUI(
             Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.weight(1f)) {
                 appPages[currentAppPage].forEach { appName ->
                     IconButton(
-                        onClick = { Util.sendNotificatión(context,connectManager.lauch(appName)) },
+                        onClick = {
+                            if("Error: Tv no conectada" == connectManager.lauch(appName))
+                                Util.sendNotificatión(context, "Error: Tv no conectada")
+                                  },
                         modifier = Modifier.size(60.dp)
                     )   {
                         Icon(

@@ -34,7 +34,7 @@ class Util {
                 val channel = NotificationChannel(
                     "default_channel",
                     "Canal por defecto",
-                    NotificationManager.IMPORTANCE_DEFAULT
+                    NotificationManager.IMPORTANCE_HIGH
                 ).apply {
                     description = "Este es el canal de notificaciones por defecto."
                 }
@@ -48,7 +48,7 @@ class Util {
                 .setContentTitle("Estado de televisores")
                 .setContentText(mensaje)
                 .setSmallIcon(android.R.drawable.ic_dialog_info) // Cambia el ícono si lo deseas
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true)
                 .build()
 
