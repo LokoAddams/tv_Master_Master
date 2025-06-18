@@ -38,6 +38,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.domain.DispTV
 import com.example.tvmaster.Manager
 import com.example.tvmaster.R
+import com.example.tvmaster.service.Util
 
 @Composable
 fun ControlUI(
@@ -90,7 +91,7 @@ fun ControlUI(
                 .padding(horizontal = 32.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            ControlButton(icon = Icons.Filled.PowerSettingsNew, onClick = { connectManager.tvOff() }, buttonColor = Color.Red)
+            ControlButton(icon = Icons.Filled.PowerSettingsNew, onClick = { Util.sendNotificatión(context, connectManager.tvOff()) }, buttonColor = Color.Red)
             val nombre = remember { mutableStateOf("Desconocido") }
 
             ControlButton(
@@ -101,7 +102,7 @@ fun ControlUI(
                 },
                 buttonColor = Color.Cyan
             )
-            ControlButton(icon = Icons.Filled.Home, onClick = {connectManager.home()}, buttonColor = Color.Blue)
+            ControlButton(icon = Icons.Filled.Home, onClick = {Util.sendNotificatión(context, connectManager.home())}, buttonColor = Color.Blue)
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -147,17 +148,17 @@ fun ControlUI(
         }
         else {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                ControlButton(icon = Icons.Filled.KeyboardArrowUp, onClick = { connectManager.up() }, buttonColor = Color.LightGray)
+                ControlButton(icon = Icons.Filled.KeyboardArrowUp, onClick = {Util.sendNotificatión(context, connectManager.up()) }, buttonColor = Color.LightGray)
                 Spacer(modifier = Modifier.height(20.dp))
                 Row(horizontalArrangement = Arrangement.Center) {
-                    ControlButton(icon = Icons.AutoMirrored.Filled.KeyboardArrowLeft, onClick = { connectManager.left() }, buttonColor = Color.LightGray)
+                    ControlButton(icon = Icons.AutoMirrored.Filled.KeyboardArrowLeft, onClick = {Util.sendNotificatión(context, connectManager.left()) }, buttonColor = Color.LightGray)
                     Spacer(modifier = Modifier.width(20.dp))
-                    ControlButtonWithText(onClick = { connectManager.okay() }, buttonColor = Color(rgb(81, 247, 89)) , text = "OK")
+                    ControlButtonWithText(onClick = {Util.sendNotificatión(context, connectManager.okay()) }, buttonColor = Color(rgb(81, 247, 89)) , text = "OK")
                     Spacer(modifier = Modifier.width(20.dp))
-                    ControlButton(icon = Icons.AutoMirrored.Filled.KeyboardArrowRight, onClick = { connectManager.right() }, buttonColor = Color.LightGray)
+                    ControlButton(icon = Icons.AutoMirrored.Filled.KeyboardArrowRight, onClick = {Util.sendNotificatión(context, connectManager.right()) }, buttonColor = Color.LightGray)
                 }
                 Spacer(modifier = Modifier.height(20.dp))
-                ControlButton(icon = Icons.Filled.KeyboardArrowDown, onClick = { connectManager.down() }, buttonColor = Color.LightGray)
+                ControlButton(icon = Icons.Filled.KeyboardArrowDown, onClick = {Util.sendNotificatión(context, connectManager.down()) }, buttonColor = Color.LightGray)
             }
         }
 
@@ -174,8 +175,8 @@ fun ControlUI(
                     .padding(8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                ControlButton(icon = Icons.AutoMirrored.Filled.VolumeUp, onClick = {connectManager.volumenUp()}, buttonColor = Color.Gray)
-                ControlButton(icon = Icons.AutoMirrored.Filled.VolumeDown, onClick = { connectManager.volumenDown()}, buttonColor = Color.Gray)
+                ControlButton(icon = Icons.AutoMirrored.Filled.VolumeUp, onClick = { Util.sendNotificatión(context, connectManager.volumenUp())}, buttonColor = Color.Gray)
+                ControlButton(icon = Icons.AutoMirrored.Filled.VolumeDown, onClick = { Util.sendNotificatión(context,connectManager.volumenDown())}, buttonColor = Color.Gray)
             }
 
             // Botón Atrás centrado verticalmente usando un Box
@@ -185,7 +186,7 @@ fun ControlUI(
                     .width(70.dp), // Ajusta el ancho si es necesario
                 contentAlignment = Alignment.Center
             ) {
-                ControlButton(icon = Icons.AutoMirrored.Filled.ArrowBack, onClick = { connectManager.back() }, buttonColor = Color.Gray)
+                ControlButton(icon = Icons.AutoMirrored.Filled.ArrowBack, onClick = { Util.sendNotificatión(context,connectManager.back()) }, buttonColor = Color.Gray)
             }
 
             Column(
@@ -194,8 +195,8 @@ fun ControlUI(
                     .padding(8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                ControlButton(icon = Icons.Default.Add, onClick = { connectManager.channelUp() }, buttonColor = Color.Gray)
-                ControlButton(icon = Icons.Default.Remove, onClick = { connectManager.channelDown() }, buttonColor = Color.Gray)
+                ControlButton(icon = Icons.Default.Add, onClick = { Util.sendNotificatión(context,connectManager.channelUp()) }, buttonColor = Color.Gray)
+                ControlButton(icon = Icons.Default.Remove, onClick = { Util.sendNotificatión(context,connectManager.channelDown()) }, buttonColor = Color.Gray)
             }
         }
 
@@ -216,7 +217,7 @@ fun ControlUI(
             Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.weight(1f)) {
                 appPages[currentAppPage].forEach { appName ->
                     IconButton(
-                        onClick = { connectManager.lauch(appName) },
+                        onClick = { Util.sendNotificatión(context,connectManager.lauch(appName)) },
                         modifier = Modifier.size(60.dp)
                     )   {
                         Icon(
